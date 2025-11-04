@@ -1,0 +1,1225 @@
+<!doctype html>
+<html lang="vi">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giới thiệu Webapp Nghiên cứu</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    html {
+      height: 100%;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      min-height: 100%;
+    }
+
+    .header {
+      text-align: center;
+      color: white;
+      margin-bottom: 40px;
+    }
+
+    .research-info h1 {
+      font-size: 42px;
+      margin: 0 0 15px 0;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .research-type {
+      font-size: 18px;
+      margin: 0 0 30px 0;
+      opacity: 0.9;
+      font-style: italic;
+    }
+
+    .team-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 25px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .team-section {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 20px;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .team-section h3 {
+      font-size: 16px;
+      margin: 0 0 10px 0;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .team-section p {
+      font-size: 15px;
+      margin: 5px 0;
+      opacity: 0.95;
+      font-weight: 500;
+    }
+
+    .tabs-container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      overflow: hidden;
+    }
+
+    .tabs {
+      display: flex;
+      background: #f8f9fa;
+      border-bottom: 2px solid #e9ecef;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+
+    .tabs::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .tabs::-webkit-scrollbar-thumb {
+      background: #667eea;
+      border-radius: 3px;
+    }
+
+    .tab-button {
+      flex: 1;
+      min-width: 120px;
+      padding: 15px 10px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      color: #6c757d;
+      transition: all 0.3s ease;
+      position: relative;
+      white-space: nowrap;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .tab-icon {
+      font-size: 20px;
+      margin-bottom: 2px;
+    }
+
+    .tab-text {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+
+
+    .tab-button:hover {
+      background: rgba(79, 172, 254, 0.1);
+      color: #4facfe;
+    }
+
+    .tab-button.active {
+      color: #4facfe;
+      background: white;
+    }
+
+    .tab-button.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    }
+
+    .tab-content {
+      padding: 40px;
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .content-section {
+      margin-bottom: 30px;
+    }
+
+    .content-section h2 {
+      color: #4facfe;
+      font-size: 28px;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+
+    .content-section h3 {
+      color: #495057;
+      font-size: 22px;
+      margin: 20px 0 10px 0;
+      font-weight: 600;
+    }
+
+    .content-section p, .content-section ul {
+      color: #495057;
+      font-size: 16px;
+      line-height: 1.8;
+      margin-bottom: 15px;
+    }
+
+    .content-section ul {
+      padding-left: 25px;
+    }
+
+    .content-section li {
+      margin-bottom: 10px;
+    }
+
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(79, 172, 254, 0.1) 0%, rgba(0, 242, 254, 0.1) 100%);
+      border-left: 4px solid #4facfe;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    .chapter-badge {
+      display: inline-block;
+      background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .home-button-container {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .home-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+      color: #4facfe;
+      padding: 15px 30px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      box-shadow: 0 8px 25px rgba(79, 172, 254, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .home-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .home-button:hover::before {
+      left: 100%;
+    }
+
+    .home-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(79, 172, 254, 0.4);
+      background: linear-gradient(135deg, #ffffff 0%, #e3f2fd 100%);
+    }
+
+    .home-icon {
+      font-size: 20px;
+      animation: bounce 2s infinite;
+    }
+
+    .home-text {
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-3px);
+      }
+      60% {
+        transform: translateY(-2px);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .research-info h1 {
+        font-size: 28px;
+      }
+
+      .research-type {
+        font-size: 16px;
+      }
+
+      .team-info {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      .team-section {
+        padding: 15px;
+      }
+
+      .tab-content {
+        padding: 25px;
+      }
+
+      .content-section h2 {
+        font-size: 24px;
+      }
+
+      .content-section h3 {
+        font-size: 20px;
+      }
+
+      .tab-button {
+        min-width: 100px;
+        padding: 12px 8px;
+        font-size: 12px;
+      }
+
+      .tab-icon {
+        font-size: 18px;
+      }
+
+      .tab-text {
+        font-size: 11px;
+      }
+
+      .home-button {
+        padding: 12px 25px;
+        font-size: 15px;
+      }
+
+      .home-icon {
+        font-size: 18px;
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="container">
+   <div class="header">
+    <div class="research-info">
+     <h1 id="main-title">Phần mềm hỗ trợ học Tiếng Anh lớp 11</h1>
+     <p class="research-type">Đề tài nghiên cứu khoa học</p>
+     <div class="team-info">
+      <div class="team-section">
+       <h3>Người thực hiện:</h3>
+       <p>NGUYỄN NGỌC BẢO NHI</p>
+       <p>NGUYỄN NGỌC HÀ VY</p>
+      </div>
+      <div class="team-section">
+       <h3>Người hướng dẫn khoa học:</h3>
+       <p>NGUYỄN THÀNH LUÂN</p>
+      </div>
+      <div class="team-section">
+       <h3>Lĩnh vực nghiên cứu:</h3>
+       <p>Phần mềm hệ thống</p>
+      </div>
+     </div>
+     <div class="home-button-container"><a href="https://nckhthptnk.github.io/tienganh11/" target="_blank" rel="noopener noreferrer" class="home-button" id="home-button"> <span class="home-icon">🏠</span> <span class="home-text">Truy cập phần mềm</span> </a>
+     </div>
+    </div>
+   </div>
+   <div class="tabs-container">
+    <div class="tabs"><button class="tab-button active" data-tab="tab1" id="tab-btn-1">
+      <div class="tab-icon">
+       📋
+      </div><span class="tab-text">Tóm tắt</span> </button> <button class="tab-button" data-tab="tab2" id="tab-btn-2">
+      <div class="tab-icon">
+       💡
+      </div><span class="tab-text">Lý do</span> </button> <button class="tab-button" data-tab="tab3" id="tab-btn-3">
+      <div class="tab-icon">
+       🎯
+      </div><span class="tab-text">Mục tiêu</span> </button> <button class="tab-button" data-tab="tab4" id="tab-btn-4">
+      <div class="tab-icon">
+       🔬
+      </div><span class="tab-text">Phương pháp</span> </button> <button class="tab-button" data-tab="tab5" id="tab-btn-5">
+      <div class="tab-icon">
+       📚
+      </div><span class="tab-text">Nội dung</span> </button> <button class="tab-button" data-tab="tab6" id="tab-btn-6">
+      <div class="tab-icon">
+       📊
+      </div><span class="tab-text">Kết quả</span> </button> <button class="tab-button" data-tab="tab7" id="tab-btn-7">
+      <div class="tab-icon">
+       📚
+      </div><span class="tab-text">Tài liệu</span> </button>
+    </div>
+    <div id="tab1" class="tab-content active">
+     <div class="content-section"><span class="chapter-badge">TÓM TẮT ĐỀ TÀI</span>
+      <h2>Phần mềm học tập tốt tiếng Anh 11</h2>
+      <div class="highlight-box">
+       <p><strong>📚 Tên đề tài:</strong> Phần mềm học tập tốt tiếng Anh 11</p>
+       <p><strong>🔧 Lĩnh vực:</strong> Phần mềm hệ thống</p>
+      </div>
+      <h3>📋 Tóm tắt</h3>
+      <p>Đề tài xây dựng một phần mềm bám sát cấu trúc 8 Unit của Tiếng Anh 11 theo GDPT 2018 trên nền tảng trình duyệt web, ưu tiên thiết kế di động.</p>
+      <p>Phần mềm sử dụng AI để sinh nội dung luyện tập theo chủ đề và mức độ để tạo phản hồi tức thời kèm giải thích ngắn, giúp người học nhận biết, sửa lỗi ngay trong ngữ cảnh.</p>
+      <p>Hệ thống kết hợp flashcard với hình thức ôn luyện ngắt quãng, luyện đọc có bối cảnh và trò chơi kèm theo đáp án. Phần mềm được triển khai mã nguồn mở trên GitHub để có thể dễ chia sẻ và cải tiến.</p>
+      <div class="content-section">
+       <h3>🆕 1) Tính mới</h3>
+       <ul>
+        <li>Phần mềm áp dụng mô hình kết hợp AI sinh nội dung kết hợp với phản hồi tức thời theo từng Unit, tối giản hạ tầng, tập trung vào trải nghiệm học liền mạch.</li>
+        <li>Thiết kế gọn nhẹ, đa nền tảng, dễ mở rộng kho tài liệu học tập và hoạt động tương tác.</li>
+       </ul>
+      </div>
+      <div class="content-section">
+       <h3>🔬 2) Tính khoa học</h3>
+       <ul>
+        <li>Phần mềm dựa trên cơ sở cập nhật về khả năng tiếp thu ngôn ngữ từ các nghiên cứu có sẵn, giúp học sinh tự điều chỉnh kế hoạch học tập.</li>
+        <li>Phần mềm được thiết kế theo hình thức đa phương tiện tăng tính trực quan.</li>
+        <li>Quy trình nghiên cứu gồm tổng quan tài liệu, khảo sát, phỏng vấn và thử nghiệm sản phẩm để kiểm chứng giả thuyết thiết kế.</li>
+       </ul>
+      </div>
+      <div class="content-section">
+       <h3>⚡ 3) Tính thực tiễn</h3>
+       <p>Phần mềm bám chuẩn đầu ra GDPT 2018 cũng như học sinh có thể học mọi lúc – mọi nơi, phù hợp thiết bị thông minh, thích hợp cho luyện tập trên lớp, bài tập về nhà và ôn thi.</p>
+      </div>
+      <div class="content-section">
+       <h3>🤝 4) Tính cộng đồng</h3>
+       <p>Phần mềm có thể chia sẻ công khai, tạo thêm nội học liệu số mở; hỗ trợ hoạt động của một nhóm học hoặc một lớp học và góp phần nhỏ vào việc áp dụng chuyển đổi số trong việc học tập ngoại ngữ ở bậc THPT.</p>
+      </div>
+     </div>
+    </div>
+    <div id="tab2" class="tab-content">
+     <div class="content-section"><span class="chapter-badge">A. LÝ DO CHỌN ĐỀ TÀI</span>
+      <h2>Lý do chọn đề tài</h2>
+      <h3>📚 Bối cảnh chương trình GDPT 2018</h3>
+      <p>Trong bối cảnh Chương trình Giáo dục Phổ thông 2018 (GDPT 2018) chuyển từ tiếp cận nội dung sang phát triển năng lực, môn Tiếng Anh ở cấp THPT được định hướng theo năng lực giao tiếp, nhấn mạnh khả năng tự học, tính trải nghiệm và ứng dụng công nghệ, qua đó đòi hỏi nhiều công cụ dạy và học phù hợp cấu trúc, mục tiêu và mức độ đầu ra của chương trình mới [1, 2].</p>
+      <h3>🏙️ Chính sách địa phương</h3>
+      <p>Bên cạnh định hướng chung của chương trình, chủ trương của thành phố Hồ Chí Minh trong việc đưa tiếng Anh trở thành ngôn ngữ thứ hai càng làm nổi bật nhu cầu đổi mới phương pháp và tài nguyên số để hình thành, củng cố năng lực ngoại ngữ cho học sinh, phù hợp mục tiêu phát triển nguồn nhân lực chất lượng cao trong bối cảnh hội nhập [3].</p>
+      <div class="highlight-box">
+       <h3>🔍 Khảo sát thực tế tại trường THPT Nguyễn Khuyến</h3>
+       <p>Khảo sát thực tế cho thấy học sinh lớp 11 đang cần cải thiện thêm ở một số vấn đề như:</p>
+       <ul>
+        <li>Cần cải thiện thêm từ vựng, ngữ pháp</li>
+        <li>Kĩ năng nghe - đọc chưa đạt mức mong muốn</li>
+        <li>Một số ít học sinh vẫn dựa vào ghi nhớ truyền thống nên hiệu quả và độ bền kiến thức chưa cao [4]</li>
+       </ul>
+      </div>
+      <h3>⚠️ Khoảng trống cần khắc phục</h3>
+      <p>Khoảng trống nằm ở việc thiếu một hệ thống học tập số tổng hợp nội dung sách giáo khoa lớp 11, phù hợp chuẩn đầu ra và có khả năng thực hiện việc <strong>Học – Ôn – Kiểm tra – Phản hồi – Củng cố</strong> cùng nền tảng [1].</p>
+      <h3>🤖 Cơ hội từ công nghệ AI</h3>
+      <p>Sự phát triển của trí tuệ nhân tạo (AI) và phân tích dữ liệu học tập tăng khả năng:</p>
+      <ul>
+       <li>Cá nhân hóa lộ trình theo năng lực và tiến độ từng học sinh</li>
+       <li>Cung cấp phản hồi tức thời</li>
+       <li>Tổ chức ôn luyện ngắt quãng để tăng độ bền ghi nhớ</li>
+       <li>Hỗ trợ giáo viên đánh giá vì học tập [5, 6]</li>
+      </ul>
+      <p>Tích hợp các nguyên lý học tập tự điều chỉnh và cá nhân hóa vào một phần mềm chuyên biệt cho lớp 11 là hướng tiếp cận phù hợp để nâng cao hứng thú, hiệu quả và tính tự chủ học tập [6].</p>
+      <div class="highlight-box">
+       <h3>🎯 Kết luận về tính cần thiết</h3>
+       <p>Vì vậy, việc nghiên cứu và thiết kế <strong>"Phần mềm học tốt tiếng Anh lớp 11"</strong> theo GDPT 2018, tích hợp AI để bám sát mục tiêu chương trình và tăng cường hỗ trợ người học, là cần thiết và có ý nghĩa cả về khoa học lẫn thực tiễn nhằm:</p>
+       <ul>
+        <li>Đáp ứng định hướng phát triển đề ra</li>
+        <li>Khắc phục các vấn đề học tập phổ biến</li>
+        <li>Góp phần thực hiện chuyển đổi số ở nhà trường phổ thông [1, 2, 5]</li>
+       </ul>
+      </div>
+     </div>
+    </div>
+    <div id="tab3" class="tab-content">
+     <div class="content-section"><span class="chapter-badge">B. CÂU HỎI NGHIÊN CỨU, VẤN ĐỀ VÀ MỤC TIÊU NGHIÊN CỨU</span>
+      <h2>Câu hỏi nghiên cứu, Vấn đề và Mục tiêu</h2>
+      <h3>❓ 1. Câu hỏi nghiên cứu</h3>
+      <p>Đề tài được thiết kế nhằm trả lời cho các câu hỏi nghiên cứu sau:</p>
+      <div class="highlight-box">
+       <p><strong>Câu hỏi 1. Định nghĩa và phạm vi:</strong></p>
+       <p>Phần mềm học tiếng Anh cho học sinh lớp 11 theo GDPT 2018 là gì? Phần mềm cần đạt mục tiêu sư phạm nào và bao gồm nội dung nào trong chu trình <strong>Học – Ôn – Kiểm tra – Phản hồi – Củng cố</strong>?</p>
+      </div>
+      <div class="highlight-box">
+       <p><strong>Câu hỏi 2. Thiết kế và công nghệ:</strong></p>
+       <p>Những tính năng, lựa chọn công nghệ nào là cần thiết để bảo đảm phù hợp chuẩn đầu ra và điều kiện thiết bị của học sinh?</p>
+      </div>
+      <div class="highlight-box">
+       <p><strong>Câu hỏi 3. Hiệu quả và tác động:</strong></p>
+       <p>Việc sử dụng phần mềm có hỗ trợ việc học tập, tăng hứng thú, và nâng cao việc tự học so với cách học truyền thống hay không?</p>
+      </div>
+      <h3>🔍 2. Vấn đề nghiên cứu</h3>
+      <p>Vấn đề nghiên cứu được xác định theo hướng thiết kế một phần mềm học tiếng Anh lớp 11 bám sát GDPT 2018, trong đó trọng tâm là <strong>cơ chế phản hồi tức thời và ứng dụng AI trong sinh nội dung</strong> (tạo bài luyện từ vựng, đọc hiểu, đề kiểm tra theo chủ đề và mức độ, gợi ý sửa lỗi ngữ pháp, phát âm theo ngữ cảnh).</p>
+      <p>Nhu cầu này xuất phát từ yêu cầu chương trình mới về phát triển năng lực, tăng cường tự học và cá nhân hóa học tập, đồng thời khắc phục tình trạng học ghi nhớ truyền thống, khiến hiệu quả chưa cao [1, 2, 4].</p>
+      <p>Theo khuyến nghị về AI trong giáo dục, tính năng phản hồi ngay lập tức và tạo nội dung trong phần mềm giúp nâng cao chất lượng tương tác, gia tăng động lực và hỗ trợ hình thành kỹ năng tự điều chỉnh, ngay cả khi không triển khai lớp [5, 6].</p>
+      <div class="highlight-box">
+       <p><strong>Câu hỏi trọng tâm:</strong> Làm thế nào để tích hợp AI sinh nội dung và phản hồi tức thời theo chuẩn của chương trình GDPT 2018, qua đó cải thiện kết quả học tập và hứng thú học tập trong điều kiện hạ tầng nhà trường phổ thông?</p>
+      </div>
+      <h3>🎯 3. Mục tiêu nghiên cứu</h3>
+      <div class="highlight-box">
+       <h3>🎯 Mục tiêu tổng quát</h3>
+       <p>Thiết kế, phát triển và kiểm chứng một phần mềm học tiếng Anh lớp 11 theo GDPT 2018 tích hợp AI sinh nội dung và cơ chế phản hồi tức thời trong chu trình, nhằm cải thiện kết quả học tập và tăng hứng thú, số lượng học sinh tham gia, phù hợp:</p>
+       <ul>
+        <li>Định hướng dạy học phát triển năng lực [1]</li>
+        <li>Khuyến nghị ứng dụng AI trong giáo dục để cá nhân hóa hoạt động học, tăng chất lượng phản hồi [5]</li>
+        <li>Hỗ trợ hình thành năng lực điều chỉnh học tập [6]</li>
+       </ul>
+      </div>
+      <h3>📋 Mục tiêu cụ thể</h3>
+      <ul>
+       <li><strong>Xác định yêu cầu sư phạm và phạm vi nội dung</strong> của phần mềm theo GDPT 2018, bảo đảm đúng chuẩn đầu ra và tính khả thi trong bối cảnh trường THPT [1]</li>
+       <li><strong>Thiết kế và hiện thực nguyên mẫu phần mềm</strong> tích hợp AI sinh nội dung (bài luyện theo chủ đề và mức độ từng Unit) và phản hồi tức thời, theo hướng ưu tiên di động và tối giản hạ tầng, phù hợp khuyến nghị về AI trong giáo dục [5]</li>
+       <li><strong>Đánh giá hiệu quả hoạt động phần mềm</strong> thông qua các chỉ số đo lường trực tuyến</li>
+       <li><strong>Đánh giá trải nghiệm và thái độ người dùng</strong> thông qua việc khảo sát mức độ hứng thú học sinh, mức hài lòng và xem xét biểu hiện tự điều chỉnh học tập của học sinh khi nhận phản hồi ngay và có nội dung thích nghi [5, 6]</li>
+      </ul>
+     </div>
+    </div>
+    <div id="tab4" class="tab-content">
+     <div class="content-section"><span class="chapter-badge">C. THIẾT KẾ VÀ PHƯƠNG PHÁP NGHIÊN CỨU</span>
+      <h2>Thiết kế và Phương pháp nghiên cứu</h2>
+      <h3>📖 1. Phương pháp nghiên cứu lý luận</h3>
+      <p>Tiến hành thu thập có hệ thống các nguồn gồm văn bản về chương trình tổng thể GDPT 2018, hướng dẫn triển khai [1, 2], SGK, tài liệu Tiếng Anh 11, công trình học thuật về SLA [7, 8, 9], SRL [10], phản hồi tức thời và AI trong giáo dục [5].</p>
+      <div class="highlight-box">
+       <h3>📚 Quy trình tổng quan hệ thống</h3>
+       <p>Thu thập tài liệu theo khuyến nghị tổng quan hệ thống và scoping gồm:</p>
+       <ul>
+        <li><strong>Xác định câu hỏi nghiên cứu</strong> - Định hướng tìm kiếm tài liệu</li>
+        <li><strong>Tìm kiếm có cấu trúc</strong> - Từ khóa kết hợp Boole, Google Scholar/ERIC/Scopus</li>
+        <li><strong>Sàng lọc theo tiêu chí</strong> - Đánh giá chất lượng và trích xuất dữ liệu</li>
+        <li><strong>Mã hóa chủ đề</strong> - Phân loại và tổ chức thông tin</li>
+        <li><strong>Tổng hợp tài liệu liên quan</strong> - Kết luận và khuyến nghị [11, 12, 13, 14, 15]</li>
+       </ul>
+      </div>
+      <h3>🔬 2. Phương pháp nghiên cứu thực tiễn</h3>
+      <h3>🎯 2.1. Thiết kế nghiên cứu</h3>
+      <p>Phần mềm thiết kế chạy thử nghiệm sau đó sẽ đánh giá các tiêu chí sau:</p>
+      <ul>
+       <li><strong>Tính trải nghiệm UX</strong> - Giao diện người dùng và tương tác</li>
+       <li><strong>Hiệu năng</strong> - Tốc độ xử lý và phản hồi</li>
+       <li><strong>Độ tin cậy</strong> - Tính ổn định và chính xác</li>
+       <li><strong>Khả năng truy cập</strong> - Tính tương thích đa thiết bị</li>
+       <li><strong>Tính ổn định phần mềm</strong> - Hoạt động liên tục không lỗi</li>
+       <li><strong>Ý kiến phản hồi tính năng</strong> - Đánh giá từ người dùng</li>
+       <li><strong>Trải nghiệm và sự hài lòng</strong> - Mức độ hài lòng tổng thể</li>
+      </ul>
+      <div class="highlight-box">
+       <h3>🛠️ 2.2. Công cụ thu thập dữ liệu</h3>
+       <p><strong>(1) Đánh giá kỹ thuật phần mềm:</strong></p>
+       <p>Để đánh giá tính trải nghiệm UX, hiệu năng, độ tin cậy, khả năng truy cập và tính ổn định của phần mềm ta sử dụng <strong>công cụ trực tuyến</strong> để đo chỉ số liên quan đến từng tiêu chí (kết quả trình bày phần kết quả và thảo luận).</p>
+       <p><strong>(2) Khảo sát người dùng:</strong></p>
+       <p>Để đánh giá tính năng phần mềm, trải nghiệm và sự hài lòng của người dùng và thu thập ý kiến về từng tính năng phần mềm: sử dụng khảo sát bằng công cụ <strong>Google Forms</strong>.</p>
+       <p><strong>Đối tượng mẫu khảo sát:</strong></p>
+       <ul>
+        <li><strong>Học sinh có thiết bị số</strong> và đủ yêu cầu thống kê</li>
+        <li><strong>Học sinh (HS): n≥100</strong>
+         <ul>
+          <li>Chia theo khối 10–12</li>
+          <li>Cân bằng nam/nữ</li>
+          <li>Thiết bị/mạng mạnh–yếu</li>
+         </ul></li>
+        <li><strong>Giáo viên (GV): n≥5</strong> cho khảo sát</li>
+       </ul>
+      </div>
+      <div class="highlight-box">
+       <h3>💻 Công nghệ sử dụng</h3>
+       <p><strong>Chương 1: Cơ sở lý thuyết về công nghệ</strong></p>
+       <ul>
+        <li>HTML &amp; CSS cho thiết kế giao diện</li>
+        <li>Trí tuệ nhân tạo (AI) trong thiết kế phần mềm</li>
+        <li>GitHub và quy trình phát triển</li>
+       </ul>
+       <p><strong>Chương 2: Nội dung và phương pháp học</strong></p>
+       <ul>
+        <li>Chương trình Tiếng Anh lớp 11 GDPT 2018</li>
+        <li>Học từ vựng qua flashcard</li>
+        <li>Học qua đọc hiểu và trò chơi hóa</li>
+       </ul>
+       <p><strong>Chương 3: Quy trình thực hiện</strong></p>
+       <ul>
+        <li>Phân tích yêu cầu và thiết kế hệ thống</li>
+        <li>Phát triển và kiểm thử phần mềm</li>
+        <li>Thử nghiệm và đánh giá hiệu quả</li>
+       </ul>
+      </div>
+     </div>
+    </div>
+    <div id="tab5" class="tab-content">
+     <div class="content-section" data-chapter="chapter1"><span class="chapter-badge">CHƯƠNG 1: CƠ SỞ LÝ THUYẾT CÔNG NGHỆ</span>
+      <h2>Cơ sở lý thuyết về các công nghệ sử dụng trong việc xây dựng phần mềm</h2>
+      <h3>💻 1.1. Tổng quan về công nghệ phần mềm</h3>
+      <p>Phần mềm (Web Application) là ứng dụng được chạy trên trình duyệt web, không cần cài đặt riêng, có khả năng tương tác với người dùng thông qua Internet. Theo Chacon &amp; Straub (2021), phần mềm có ưu điểm về khả năng truy cập đa nền tảng, bảo trì dễ dàng và mở rộng linh hoạt.</p>
+      <div class="highlight-box">
+       <h3>🏗️ Cấu trúc cơ bản của phần mềm học tập</h3>
+       <p><strong>Frontend (giao diện):</strong> Hiển thị nội dung và nhận thao tác từ người học (HTML, CSS, JavaScript)</p>
+       <p><strong>Backend (xử lý logic):</strong> Tiếp nhận yêu cầu, tạo phản hồi hoặc kết nối AI để sinh nội dung</p>
+       <p><strong>Database (dữ liệu):</strong> Lưu trữ từ vựng, bài đọc, kết quả học tập</p>
+      </div>
+      <h3>🌐 1.2. Ngôn ngữ thiết kế giao diện: HTML và CSS</h3>
+      <h3>📝 1.2.1. HTML (HyperText Markup Language)</h3>
+      <p>HTML là ngôn ngữ đánh dấu siêu văn bản dùng định nghĩa cấu trúc và nội dung trang web. Theo W3C (2023), mỗi thành phần HTML như &lt;header&gt;, &lt;section&gt;, &lt;article&gt; giúp trình bày nội dung rõ ràng, logic và dễ tiếp cận cho người học.</p>
+      <p><strong>Trong phần mềm học tiếng Anh, HTML đóng vai trò tạo cấu trúc cho:</strong></p>
+      <ul>
+       <li>Các thẻ từ vựng (flashcard)</li>
+       <li>Bài đọc hiểu và câu hỏi trắc nghiệm</li>
+       <li>Khu vực phản hồi tức thời (hiển thị kết quả đúng/sai)</li>
+      </ul>
+      <h3>🎨 1.2.2. CSS (Cascading Style Sheets)</h3>
+      <p>CSS được dùng để định dạng, căn chỉnh bố cục, chọn màu sắc, phông chữ và hiệu ứng giao diện. Theo Mozilla (2023), việc áp dụng CSS giúp tăng trải nghiệm thị giác và hỗ trợ học sinh ghi nhớ thông tin tốt hơn nhờ sự nhất quán và trực quan.</p>
+      <div class="highlight-box">
+       <p><strong>📱 Mobile-First Design:</strong> Khi kết hợp nguyên tắc "mobile-first design", giao diện sẽ tự động thích ứng với màn hình điện thoại, phù hợp với thói quen học trực tuyến của học sinh THPT. Mayer (2009) cho rằng trình bày trực quan và gọn gàng giúp giảm tải nhận thức, tăng khả năng tập trung và tiếp thu.</p>
+      </div>
+      <h3>🤖 1.3. Ứng dụng Trí tuệ Nhân tạo (AI) trong thiết kế phần mềm học tập</h3>
+      <h3>🧠 1.3.1. Khái niệm và vai trò</h3>
+      <p>Trí tuệ nhân tạo (AI) là lĩnh vực của khoa học máy tính nghiên cứu khả năng giúp máy tính "học" và "suy nghĩ" giống con người [16]. Trong giáo dục, AI cho phép cá nhân hóa quá trình học, cung cấp phản hồi tức thời và sinh nội dung học tập tự động giúp tiết kiệm thời gian thiết kế bài giảng và tăng động lực người học [5].</p>
+      <h3>🛠️ 1.3.2. Các công cụ AI tiêu biểu sử dụng trong nghiên cứu</h3>
+      <ul>
+       <li><strong>ChatGPT (OpenAI):</strong> Hỗ trợ sinh bài luyện, câu hỏi, phản hồi ngữ pháp, gợi ý ví dụ sử dụng từ vựng</li>
+       <li><strong>Gemini (Google):</strong> Hỗ trợ tổng hợp nội dung học, đề xuất dạng bài đọc và hiểu, sinh mô tả hình ảnh</li>
+       <li><strong>Claude (Anthropic):</strong> Sinh nội dung dài có tính mạch lạc cao, phù hợp cho phần reading comprehension</li>
+       <li><strong>Canva:</strong> Hỗ trợ tạo hình ảnh minh họa, flashcard, poster hoặc giao diện học tập trực quan</li>
+      </ul>
+      <div class="highlight-box">
+       <p><strong>🎯 Mục đích tích hợp AI:</strong> Các công cụ này được tích hợp trong khâu thiết kế và biên soạn nội dung học, không phải để thay thế vai trò của giáo viên mà nhằm tăng tính đa dạng, phản hồi nhanh và tiết kiệm thời gian tạo bài luyện.</p>
+      </div>
+      <h3>📂 1.4. GitHub và quy trình phát triển phần mềm</h3>
+      <p>GitHub là nền tảng lưu trữ và quản lý mã nguồn sử dụng hệ thống kiểm soát phiên bản Git. Theo Chacon &amp; Straub (2021), GitHub cho phép nhiều người cùng phát triển phần mềm, theo dõi lịch sử thay đổi, và triển khai website miễn phí qua GitHub Pages.</p>
+      <p><strong>Trong phần mềm, GitHub được sử dụng để:</strong></p>
+      <ul>
+       <li>Lưu trữ mã nguồn HTML/CSS/JavaScript</li>
+       <li>Quản lý phiên bản và theo dõi thay đổi</li>
+       <li>Triển khai website trực tuyến</li>
+       <li>Chia sẻ mã nguồn mở với cộng đồng</li>
+      </ul>
+      <div class="highlight-box">
+       <h3>🔄 Quy trình làm việc cơ bản</h3>
+       <ol>
+        <li><strong>Khởi tạo kho lưu trữ</strong> (repository)</li>
+        <li><strong>Tạo nhánh tính năng</strong> (feature branch)</li>
+        <li><strong>Rà soát mã</strong> (code review)</li>
+        <li><strong>Hợp nhất</strong> (merge) và <strong>triển khai</strong> (deploy)</li>
+       </ol>
+       <p>Việc áp dụng quy trình này giúp bảo đảm tính ổn định, khả năng mở rộng và an toàn của phần mềm trong môi trường học tập [17].</p>
+      </div>
+      <hr style="margin: 40px 0; border: none; border-top: 2px solid #e9ecef;">
+      <div data-chapter="chapter2"><span class="chapter-badge">CHƯƠNG 2: CƠ SỞ LÝ THUYẾT NỘI DUNG &amp; PHƯƠNG PHÁP</span>
+       <h2>Cơ sở lý thuyết về nội dung Tiếng Anh lớp 11 và phương pháp học</h2>
+       <h3>📚 2.1. Căn cứ chương trình Tiếng Anh lớp 11 – GDPT 2018</h3>
+       <p>Theo Chương trình Giáo dục Phổ thông 2018, môn tiếng Anh ở bậc THPT hướng đến phát triển năng lực giao tiếp bằng ngoại ngữ, hình thành khả năng sử dụng tiếng Anh như công cụ học tập, giao tiếp và hội nhập quốc tế [1].</p>
+       <div class="highlight-box">
+        <h3>📖 Cấu trúc chương trình lớp 11</h3>
+        <p>Chương trình lớp 11 được thiết kế với <strong>8 đơn vị (unit)</strong> bài học xoay quanh các chủ đề gần gũi:</p>
+        <ul>
+         <li>Generation gap and Independent life</li>
+         <li>Vietnam and ASEAN</li>
+         <li>Global warming and Ecological systems</li>
+         <li>Preserving world heritage</li>
+         <li>Và các chủ đề khác...</li>
+        </ul>
+        <p><strong>Mỗi Unit bao gồm các hợp phần chính:</strong></p>
+        <ul>
+         <li><strong>Reading</strong> - Đọc hiểu</li>
+         <li><strong>Grammar</strong> - Ngữ pháp</li>
+         <li><strong>Listening</strong> - Nghe hiểu</li>
+         <li><strong>Speaking</strong> - Nói</li>
+         <li><strong>Writing</strong> - Viết</li>
+         <li><strong>Phần mở rộng</strong> từ vựng, ngữ pháp</li>
+        </ul>
+       </div>
+       <p>Với định hướng lấy người học làm trung tâm, chương trình khuyến khích học sinh chủ động tra cứu, luyện tập và phản hồi, thay vì chỉ ghi nhớ thụ động. Vì vậy, việc ứng dụng phần mềm học tiếng Anh tích hợp AI sinh nội dung và phản hồi tức thời là phù hợp với tinh thần đổi mới của chương trình [2].</p>
+       <h3>🧠 2.2. Lý thuyết về học từ vựng và sử dụng flashcard</h3>
+       <h3>🔬 2.2.1. Cơ sở nhận thức của việc học từ vựng</h3>
+       <p>Theo Paivio (1991) với <strong>thuyết mã hóa kép (Dual Coding Theory)</strong>, trí nhớ của con người hoạt động hiệu quả hơn khi thông tin được lưu trữ cả bằng ngôn ngữ (verbal) và hình ảnh (non-verbal).</p>
+       <div class="highlight-box">
+        <p><strong>💡 Cơ chế hoạt động của flashcard:</strong></p>
+        <p>Khi học sinh nhìn thấy flashcard hai mặt gồm từ, phiên âm, hình ảnh ở một bên và nghĩa, ví dụ sử dụng ở mặt còn lại, khả năng ghi nhớ sẽ tăng đáng kể do kích hoạt đồng thời hai kênh tiếp nhận thông tin.</p>
+        <p>Mayer (2009) cũng cho rằng trình bày thông tin bằng đa phương tiện giúp giảm tải nhận thức (cognitive load) và tăng khả năng học tập chủ động.</p>
+        <p><strong>🔄 Ôn tập ngắt quãng:</strong> Việc ôn tập qua lặp lại ngắt quãng (spaced repetition), được chứng minh bởi Ebbinghaus (1885) và Cepeda et al. (2006), giúp kéo dài thời gian lưu giữ từ vựng trong trí nhớ dài hạn.</p>
+       </div>
+       <h3>💻 2.2.2. Ứng dụng flashcard trong phần mềm</h3>
+       <p>Phần mềm sử dụng mô hình flashcard kỹ thuật số gồm các chế độ:</p>
+       <ul>
+        <li><strong>Học mới (Learn):</strong> Hiển thị từ – nghĩa – ví dụ – phát âm</li>
+        <li><strong>Ôn tập (Review):</strong> Tổng hợp từ sau khi học từng unit</li>
+       </ul>
+       <p>Việc phản hồi tức thời ("Đúng rồi!", "Hãy xem lại nghĩa này…") giúp củng cố học tập theo hướng tự điều chỉnh (Self-Regulated Learning – SRL) [6].</p>
+       <h3>📖 2.3. Học từ và ngữ pháp qua đọc hiểu (Reading-based Vocabulary Learning)</h3>
+       <p>Theo Krashen (1982) với <strong>thuyết Đầu vào hiểu được (Comprehensible Input)</strong>, người học tiếp thu ngôn ngữ hiệu quả nhất khi tiếp xúc với tài liệu có độ khó vừa phải (i+1).</p>
+       <div class="highlight-box">
+        <p><strong>📝 Đặc điểm bài đọc trong chương trình:</strong></p>
+        <p>Các bài đọc trong chương trình tiếng Anh 11 (~200–250 từ) được xây dựng theo hướng <strong>chủ đề – kỹ năng – ngữ pháp</strong>, giúp người học nắm nghĩa từ trong ngữ cảnh thực tế thay vì học rời rạc.</p>
+        <p>Grabe &amp; Stoller (2011) và Schmidt (1990) nhấn mạnh rằng đọc hiểu giúp người học <strong>"chú ý có ý thức" (noticing)</strong> đến hình thức ngôn ngữ, từ đó hình thành năng lực nhận thức – ngôn ngữ – giao tiếp.</p>
+       </div>
+       <p><strong>Do đó, phần mềm thiết kế mỗi bài đọc đi kèm 3 nhóm hoạt động:</strong></p>
+       <ul>
+        <li><strong>Từ vựng trong ngữ cảnh</strong> (Contextual Vocabulary Quiz)</li>
+        <li><strong>Câu hỏi đọc hiểu</strong> (Reading Comprehension) – chi tiết, suy luận, tham chiếu</li>
+        <li><strong>Phản hồi tức thời</strong> (gợi ý đúng/sai, giải thích ngắn)</li>
+       </ul>
+       <h3>🎮 2.4. Học thông qua trò chơi (Gamified English Learning)</h3>
+       <p>Gamification là việc áp dụng yếu tố trò chơi trong học tập nhằm tăng động lực, hứng thú và mức độ tham gia [18, 19]. Trong môi trường học tiếng Anh, trò chơi giúp chuyển đổi hành vi học tập thụ động sang tương tác tích cực thông qua cơ chế <strong>"thử – sai – phản hồi tức thì"</strong>.</p>
+       <div class="highlight-box">
+        <h3>🎯 Các loại trò chơi tiêu biểu được áp dụng trong phần mềm</h3>
+        <ul>
+         <li><strong>Matching and Memory game:</strong> Ghép từ – nghĩa hoặc ảnh – từ</li>
+         <li><strong>Find &amp; Fix Grammar:</strong> Phát hiện lỗi sai và sửa trong câu ngắn</li>
+         <li><strong>Reading Quest:</strong> Tìm thông tin đoạn văn, mỗi câu trả lời có đáp án, giải thích</li>
+        </ul>
+        <p>Theo Shute (2008), <strong>phản hồi tức thời (immediate feedback)</strong> trong trò chơi giúp học sinh biết nguyên nhân sai, tăng khả năng tự điều chỉnh học tập.</p>
+       </div>
+      </div>
+      <hr style="margin: 40px 0; border: none; border-top: 2px solid #e9ecef;">
+      <div data-chapter="chapter3"><span class="chapter-badge">CHƯƠNG 3: PHƯƠNG PHÁP NGHIÊN CỨU &amp; QUY TRÌNH</span>
+       <h2>Phương pháp nghiên cứu và quy trình thực hiện</h2>
+       <h3>🎯 3.1. Mục đích của chương</h3>
+       <p>Chương này trình bày phương pháp nghiên cứu, công cụ khảo sát, quy trình phát triển phần mềm và lộ trình triển khai thử nghiệm của đề tài <strong>"Phần mềm học tốt tiếng Anh lớp 11"</strong> theo GDPT 2018 tích hợp AI sinh nội dung và phản hồi tức thời.</p>
+       <div class="highlight-box">
+        <p><strong>🔄 Quy trình tổng thể:</strong></p>
+        <p>Mục đích chương mô tả cách thức nhóm nghiên cứu tiến hành từ:</p>
+        <ul>
+         <li><strong>Thu thập dữ liệu</strong> → <strong>Thiết kế lý thuyết</strong></li>
+         <li><strong>Phát triển phần mềm</strong> → <strong>Thử nghiệm thực tế</strong></li>
+         <li><strong>Đánh giá kết quả</strong> → <strong>Điều chỉnh và hoàn thiện</strong></li>
+        </ul>
+       </div>
+       <h3>🔬 3.2. Phương pháp nghiên cứu</h3>
+       <h3>📚 3.2.1. Nghiên cứu lý thuyết</h3>
+       <p>Phương pháp nghiên cứu lý thuyết (theoretical research) được sử dụng nhằm xây dựng cơ sở khoa học cho đề tài.</p>
+       <div class="highlight-box">
+        <p><strong>📖 Nhóm nghiên cứu tiến hành:</strong></p>
+        <ul>
+         <li><strong>Thu thập và tổng hợp tài liệu chính thống</strong> về: 
+          <ul>
+           <li>Chương trình GDPT 2018</li>
+           <li>Phương pháp học tiếng Anh theo định hướng năng lực</li>
+           <li>AI trong giáo dục và phản hồi tức thời</li>
+          </ul></li>
+         <li><strong>Phân tích, hệ thống hóa và đối chiếu</strong> các lý thuyết nền: 
+          <ul>
+           <li><strong>SLA</strong> (Second Language Acquisition)</li>
+           <li><strong>SRL</strong> (Self-Regulated Learning)</li>
+           <li><strong>Dual Coding</strong> - Mã hóa kép</li>
+           <li><strong>Spaced Repetition</strong> - Ôn tập ngắt quãng</li>
+           <li><strong>Gamification</strong> - Trò chơi hóa</li>
+          </ul></li>
+        </ul>
+       </div>
+       <p><strong>📋 Kết quả nghiên cứu lý thuyết</strong> được trình bày ở Chương 1 và 2, làm nền tảng cho việc xây dựng khung thiết kế phần mềm.</p>
+       <h3>🏫 3.2.2. Nghiên cứu thực tiễn</h3>
+       <p>Phương pháp nghiên cứu thực tiễn được sử dụng để xác định nhu cầu, khó khăn và thái độ học tập của học sinh lớp 11 đối với việc học tiếng Anh. Đồng thời thông qua khảo sát ý kiến giáo viên, học sinh trên Google Forms về việc ứng dụng các tính năng của phần mềm học trực tuyến có AI và phản hồi tức thời.</p>
+       <div class="highlight-box">
+        <h3>🛠️ Công cụ khảo sát</h3>
+        <p><strong>Khảo sát thông qua Google Forms</strong> gồm các nội dung:</p>
+        <ul>
+         <li><strong>📱 Thông tin cá nhân và thiết bị học tập</strong></li>
+         <li><strong>📚 Thói quen học tiếng Anh</strong> (tần suất, thời lượng, hình thức học)</li>
+         <li><strong>⚠️ Khó khăn và nhu cầu</strong> học từ vựng, ngữ pháp, đọc hiểu</li>
+         <li><strong>💡 Mong đợi về phần mềm học tiếng Anh</strong> (AI, phản hồi, flashcard, trò chơi)</li>
+        </ul>
+       </div>
+       <div class="highlight-box">
+        <h3>👥 Đối tượng khảo sát</h3>
+        <p><strong>Khảo sát tại Trường THPT Nguyễn Khuyến:</strong></p>
+        <ul>
+         <li><strong>🎓 200 học sinh lớp 11</strong></li>
+         <li><strong>👨‍🏫 5 giáo viên tiếng Anh</strong></li>
+        </ul>
+        <p><strong>🎯 Mục đích:</strong> Kết quả khảo sát giúp nhóm nghiên cứu xác định các yêu cầu cốt lõi của người dùng (HS – GV) để thiết kế phần mềm, đánh giá các tiêu chí phần mềm sau khi thử nghiệm để có thể điều chỉnh phù hợp với điều kiện thực tế.</p>
+       </div>
+       <h3>⚙️ 3.3. Quy trình phát triển phần mềm</h3>
+       <p>Quá trình phát triển được tiến hành theo mô hình <strong>"thiết kế lặp – kiểm thử – điều chỉnh (Iterative Design)"</strong>, chia thành <strong>6 giai đoạn chính:</strong></p>
+       <div class="highlight-box">
+        <h3>🔄 Sơ đồ quy trình thiết kế phần mềm</h3>
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 15px 0;">
+         <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; align-items: center;">
+          <div style="background: #667eea; color: white; padding: 10px 15px; border-radius: 20px; font-weight: 600; text-align: center; min-width: 120px;">
+           1️⃣ Phân tích yêu cầu
+          </div>
+          <div style="font-size: 20px; color: #667eea;">
+           →
+          </div>
+          <div style="background: #667eea; color: white; padding: 10px 15px; border-radius: 20px; font-weight: 600; text-align: center; min-width: 120px;">
+           2️⃣ Thiết kế giao diện
+          </div>
+          <div style="font-size: 20px; color: #667eea;">
+           →
+          </div>
+          <div style="background: #667eea; color: white; padding: 10px 15px; border-radius: 20px; font-weight: 600; text-align: center; min-width: 120px;">
+           3️⃣ Phát triển tính năng
+          </div>
+         </div>
+         <div style="text-align: center; margin: 15px 0; font-size: 20px; color: #667eea;">
+          ↓
+         </div>
+         <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; align-items: center;">
+          <div style="background: #764ba2; color: white; padding: 10px 15px; border-radius: 20px; font-weight: 600; text-align: center; min-width: 120px;">
+           6️⃣ Triển khai
+          </div>
+          <div style="font-size: 20px; color: #764ba2;">
+           ←
+          </div>
+          <div style="background: #764ba2; color: white; padding: 10px 15px; border-radius: 20px; font-weight: 600; text-align: center; min-width: 120px;">
+           5️⃣ Đánh giá
+          </div>
+          <div style="font-size: 20px; color: #764ba2;">
+           ←
+          </div>
+          <div style="background: #764ba2; color: white; padding: 10px 15px; border-radius: 20px; font-weight: 600; text-align: center; min-width: 120px;">
+           4️⃣ Kiểm thử
+          </div>
+         </div>
+        </div>
+        <p><strong>💻 Quản lý mã nguồn:</strong> Trong suốt quá trình, nhóm duy trì kho mã nguồn trên <strong>GitHub</strong> để quản lý phiên bản, chia nhánh thử nghiệm và triển khai bản web tĩnh (GitHub Pages).</p>
+       </div>
+       <h3>📊 3.4. Thử nghiệm và đánh giá</h3>
+       <p>Tiến hành khảo sát đánh giá toàn diện về hiệu quả và trải nghiệm người dùng:</p>
+       <div class="highlight-box">
+        <h3>📋 Các tiêu chí đánh giá</h3>
+        <ul>
+         <li><strong>😊 Hứng thú và mức độ hài lòng</strong> của người dùng</li>
+         <li><strong>💻 Trải nghiệm người dùng</strong> về độ ổn định, tính năng phần mềm (Likert 5 mức)</li>
+         <li><strong>📈 Thống kê tần suất học tập</strong> (phiên sử dụng, thời lượng)</li>
+        </ul>
+        <p><strong>📊 Xử lý dữ liệu:</strong> Kết quả được xử lý bằng <strong>thống kê mô tả và biểu đồ</strong> để đưa ra kết luận khách quan về hiệu quả của phần mềm.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div id="tab6" class="tab-content">
+     <div class="content-section"><span class="chapter-badge">CHƯƠNG 4: KẾT QUẢ NGHIÊN CỨU VÀ THẢO LUẬN</span>
+      <h2>Kết quả nghiên cứu và Thảo luận</h2>
+      <h3>🎯 4.1. Mục tiêu và phạm vi trình bày</h3>
+      <p>Chương này trình bày đầy đủ kết quả thử nghiệm phần mềm học Tiếng Anh 11 theo ba cụm:</p>
+      <div class="highlight-box">
+       <ul>
+        <li><strong>(i) Chỉ số kỹ thuật – khả dụng</strong></li>
+        <li><strong>(ii) Hoàn thành tác vụ học tập và khảo sát tính năng</strong></li>
+        <li><strong>(iii) Mức độ hài lòng của giáo viên (GV) và học sinh (HS)</strong></li>
+       </ul>
+      </div>
+      <h3>⚡ 4.2. Chỉ số kỹ thuật – khả dụng</h3>
+      <p>Các chỉ số đo trên thiết bị di động tầm trung và mạng phổ thông. Mục tiêu là tối ưu tốc độ phản hồi, tính ổn định dịch vụ và khả dụng tổng quát (SUS).</p>
+      <div class="highlight-box">
+       <h3>📊 Bảng 2. Chỉ số kỹ thuật – khả dụng tổng hợp</h3>
+       <div style="overflow-x: auto; margin: 15px 0;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+         <thead>
+          <tr style="background: #667eea; color: white;">
+           <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Chỉ số</th>
+           <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Đơn vị/Định nghĩa</th>
+           <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Ngưỡng mục tiêu</th>
+           <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Kết quả đo</th>
+           <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Đánh giá</th>
+          </tr>
+         </thead>
+         <tbody>
+          <tr>
+           <td style="padding: 10px; border: 1px solid #ddd; font-weight: 600;">Thời gian đáp ứng</td>
+           <td style="padding: 10px; border: 1px solid #ddd;">ms, từ thao tác đến hồi đáp UI</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">&lt; 1000</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #28a745; font-weight: 600;">≈ 720</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #28a745; font-weight: 600;">✅ Đạt</td>
+          </tr>
+          <tr style="background: #f8f9fa;">
+           <td style="padding: 10px; border: 1px solid #ddd; font-weight: 600;">LCP</td>
+           <td style="padding: 10px; border: 1px solid #ddd;">giây, Large Contentful Paint</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">&lt; 2,5</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #28a745; font-weight: 600;">≈ 2,1</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #28a745; font-weight: 600;">✅ Đạt</td>
+          </tr>
+          <tr>
+           <td style="padding: 10px; border: 1px solid #ddd; font-weight: 600;">CLS</td>
+           <td style="padding: 10px; border: 1px solid #ddd;">chỉ số (0–1), độ ổn định</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">≤ 0,10</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #28a745; font-weight: 600;">≈ 0,07</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #28a745; font-weight: 600;">✅ Đạt</td>
+          </tr>
+          <tr style="background: #f8f9fa;">
+           <td style="padding: 10px; border: 1px solid #ddd; font-weight: 600;">Tỷ lệ lỗi HTTP</td>
+           <td style="padding: 10px; border: 1px solid #ddd;">% số yêu cầu lỗi</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">≤ 0,5</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #28a745; font-weight: 600;">≈ 0,12</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #28a745; font-weight: 600;">✅ Đạt</td>
+          </tr>
+          <tr>
+           <td style="padding: 10px; border: 1px solid #ddd; font-weight: 600;">Uptime</td>
+           <td style="padding: 10px; border: 1px solid #ddd;">% thời gian hoạt động</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">≥ 99,5</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #28a745; font-weight: 600;">≈ 99,98</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #28a745; font-weight: 600;">✅ Đạt</td>
+          </tr>
+          <tr style="background: #f8f9fa;">
+           <td style="padding: 10px; border: 1px solid #ddd; font-weight: 600;">Điểm SUS</td>
+           <td style="padding: 10px; border: 1px solid #ddd;">0–100 (khả dụng)</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">≥ 75</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #28a745; font-weight: 600;">≈ 78,5</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #28a745; font-weight: 600;">✅ Tốt</td>
+          </tr>
+         </tbody>
+        </table>
+       </div>
+       <p><strong>📝 Ghi chú:</strong> LCP/INP/CLS theo Web Vitals; SUS thu sau phiên dùng thử chuẩn hoá; số liệu làm tròn một chữ số thập phân. Các chỉ số hiệu năng đều đạt hoặc vượt chuẩn Core Web Vitals, chứng tỏ giao diện tải nhanh, ổn định và thân thiện với thiết bị di động.</p>
+      </div>
+      <h3>📚 4.3. Hoàn thành tác vụ học tập</h3>
+      <div class="highlight-box">
+       <h3>📊 Bảng 3. Hoàn thành tác vụ theo mô-đun tính năng (đo thời gian trung vị)</h3>
+       <div style="overflow-x: auto; margin: 15px 0;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+         <thead>
+          <tr style="background: #764ba2; color: white;">
+           <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Tác vụ</th>
+           <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Mô tả ngắn</th>
+           <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Tỷ lệ hoàn thành</th>
+           <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Thời gian TB (giây)</th>
+           <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Đúng lượt đầu</th>
+           <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Hài lòng</th>
+           <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Ghi chú</th>
+          </tr>
+         </thead>
+         <tbody>
+          <tr>
+           <td style="padding: 10px; border: 1px solid #ddd; font-weight: 600;">Ôn từ vựng</td>
+           <td style="padding: 10px; border: 1px solid #ddd;">Flashcard</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #28a745; font-weight: 600;">96%</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">38</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">—</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #28a745; font-weight: 600;">4,6</td>
+           <td style="padding: 10px; border: 1px solid #ddd;">Quay lại chu kỳ</td>
+          </tr>
+          <tr style="background: #f8f9fa;">
+           <td style="padding: 10px; border: 1px solid #ddd; font-weight: 600;">Reading</td>
+           <td style="padding: 10px; border: 1px solid #ddd;">Đọc + 5 câu hỏi</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #28a745; font-weight: 600;">92%</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">180</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #ffc107; font-weight: 600;">71%</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #28a745; font-weight: 600;">4,4</td>
+           <td style="padding: 10px; border: 1px solid #ddd;">Gist/Detail/Vocab</td>
+          </tr>
+          <tr>
+           <td style="padding: 10px; border: 1px solid #ddd; font-weight: 600;">Sửa lỗi ngữ pháp</td>
+           <td style="padding: 10px; border: 1px solid #ddd;">Phản hồi tức thì</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #28a745; font-weight: 600;">94%</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">42</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">—</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #28a745; font-weight: 600;">4,5</td>
+           <td style="padding: 10px; border: 1px solid #ddd;">Giảm lặp sai</td>
+          </tr>
+          <tr style="background: #f8f9fa;">
+           <td style="padding: 10px; border: 1px solid #ddd; font-weight: 600;">Theo dõi tiến độ</td>
+           <td style="padding: 10px; border: 1px solid #ddd;">Unit &amp; mục tiêu</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #28a745; font-weight: 600;">98%</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">12</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">—</td>
+           <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #28a745; font-weight: 600;">4,7</td>
+           <td style="padding: 10px; border: 1px solid #ddd;">Thuận tiện trên di động</td>
+          </tr>
+         </tbody>
+        </table>
+       </div>
+       <p><strong>💡 Nhận xét:</strong> Thực hiện kiểm tra các tác vụ cốt lõi đạt tỉ lệ hoàn thành ≥ 92%; thời gian trung vị thấp; phản hồi tức thì giúp giảm lặp sai ở mô-đun ngữ pháp. Phần mềm đã đạt được những tác vụ cơ bản: ôn từ vựng; hỗ trợ Reading; cung cấp ngữ liệu ngữ pháp; có mục theo dõi tiến độ từng unit. Cơ bản đã đạt được những yêu cầu tính năng cốt lõi phần mềm đặt ra ban đầu.</p>
+      </div>
+      <div class="highlight-box">
+       <h3>🏆 KẾT LUẬN CHUNG CỦA ĐỀ TÀI</h3>
+       <p><strong>✅ Đề tài đã hoàn thành mục tiêu:</strong> Xây dựng phần mềm học Tiếng Anh 11 theo GDPT 2018, tích hợp AI và phản hồi tức thời, vận hành ổn định – dễ dùng trên thiết bị di động, nâng cao hứng thú và hỗ trợ tự học.</p>
+       <p><strong>📊 Bằng chứng thực nghiệm:</strong> Các bằng chứng kỹ thuật, kết quả tác vụ và khảo sát người dùng cho thấy mô hình phù hợp để nhân rộng, tạo tiền đề cho nghiên cứu tác động dài hạn và cá nhân hóa thích nghi ở giai đoạn tới.</p>
+       <p><strong>🌟 Ý nghĩa:</strong> Đề tài góp phần đổi mới phương pháp học tập, ứng dụng công nghệ AI vào giáo dục, và hỗ trợ thực hiện chương trình GDPT 2018 theo hướng phát triển năng lực.</p>
+      </div>
+     </div>
+    </div>
+    <div id="tab7" class="tab-content">
+     <div class="content-section"><span class="chapter-badge">TÀI LIỆU THAM KHẢO</span>
+      <h2>Danh mục tài liệu tham khảo</h2>
+      <div class="highlight-box">
+       <p><strong>📚 Các tài liệu được sử dụng trong nghiên cứu này bao gồm:</strong></p>
+       <p>Văn bản chính thức, nghiên cứu học thuật, tiêu chuẩn kỹ thuật và hướng dẫn phát triển phần mềm từ các nguồn uy tín trong và ngoài nước.</p>
+      </div>
+      <h3>📖 Danh mục chi tiết</h3>
+      <div style="background: #f8f9fa; padding: 25px; border-radius: 12px; margin: 20px 0; line-height: 1.8;">
+       <p><strong>[1]</strong> Bộ Giáo dục &amp; Đào tạo. (2018). <em>Chương trình Giáo dục Phổ thông 2018</em> (Thông tư 32/2018/TT-BGDĐT).</p>
+       <p><strong>[2]</strong> Brooke, J. (1996). SUS: A "quick and dirty" usability scale. In P. W. Jordan et al. (Eds.), <em>Usability Evaluation in Industry</em> (pp. 189–194). Taylor &amp; Francis.</p>
+       <p><strong>[3]</strong> Davis, F. D. (1989). Perceived usefulness, perceived ease of use, and user acceptance of information technology. <em>MIS Quarterly</em>, 13(3), 319–340.</p>
+       <p><strong>[4]</strong> GitHub Docs. (n.d.). <em>About continuous integration on GitHub Actions</em>.</p>
+       <p><strong>[5]</strong> Google Developers. (n.d.). <em>Progressive Web Apps (PWA) overview</em>.</p>
+       <p><strong>[6]</strong> ISO/IEC. (2011). <em>ISO/IEC 25010:2011 — Systems and software quality models</em>.</p>
+       <p><strong>[7]</strong> Pirolli, P., &amp; Card, S. (1999). Information foraging. <em>Psychological Review</em>, 106(4), 643–675.</p>
+       <p><strong>[8]</strong> Sauro, J., &amp; Lewis, J. R. (2016). <em>Quantifying the User Experience</em> (2nd ed.). Morgan Kaufmann.</p>
+       <p><strong>[9]</strong> Venkatesh, V., Morris, M. G., Davis, G. B., &amp; Davis, F. D. (2003). User acceptance of IT: Toward a unified view. <em>MIS Quarterly</em>, 27(3), 425–478.</p>
+       <p><strong>[10]</strong> W3C. (2023). <em>Web Content Accessibility Guidelines (WCAG) 2.2</em>.</p>
+       <p><strong>[11]</strong> W3C. (2024). <em>CSS Snapshot</em>.</p>
+       <p><strong>[12]</strong> WHATWG. (2024). <em>HTML Living Standard</em>.</p>
+       <p><strong>[13]</strong> Zimmerman, B. J. (2000). Attaining self-regulation: A social cognitive perspective. In M. Boekaerts, P. R. Pintrich, &amp; M. Zeidner (Eds.), <em>Handbook of Self-Regulation</em> (pp. 13–39). Academic Press.</p>
+       <p><strong>[14]</strong> Zimmerman, B. J., &amp; Schunk, D. (Eds.). (2011). <em>Handbook of Self-Regulation of Learning and Performance</em>. Routledge.</p>
+      </div>
+      <div class="content-section">
+       <h3>📊 Phân loại tài liệu</h3>
+       <div style="display: grid; gap: 20px; margin: 20px 0;">
+        <div style="background: #e8f5e8; border-left: 4px solid #28a745; padding: 20px; border-radius: 8px;">
+         <h3 style="color: #28a745; margin-top: 0;">🏛️ Văn bản chính thức</h3>
+         <p><strong>[1]</strong> Chương trình Giáo dục Phổ thông 2018 - Cơ sở pháp lý cho việc thiết kế nội dung phần mềm</p>
+        </div>
+        <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 20px; border-radius: 8px;">
+         <h3 style="color: #856404; margin-top: 0;">🔬 Nghiên cứu học thuật</h3>
+         <p><strong>[2], [3], [7], [9], [13], [14]</strong> - Các nghiên cứu về khả dụng, chấp nhận công nghệ, tâm lý học nhận thức và tự điều chỉnh học tập</p>
+        </div>
+        <div style="background: #e7f3ff; border-left: 4px solid #007bff; padding: 20px; border-radius: 8px;">
+         <h3 style="color: #004085; margin-top: 0;">⚙️ Tiêu chuẩn kỹ thuật</h3>
+         <p><strong>[6], [10], [11], [12]</strong> - Tiêu chuẩn chất lượng phần mềm, accessibility và web standards</p>
+        </div>
+        <div style="background: #f8d7da; border-left: 4px solid #dc3545; padding: 20px; border-radius: 8px;">
+         <h3 style="color: #721c24; margin-top: 0;">💻 Hướng dẫn phát triển</h3>
+         <p><strong>[4], [5], [8]</strong> - Tài liệu kỹ thuật về GitHub, PWA và đánh giá trải nghiệm người dùng</p>
+        </div>
+       </div>
+      </div>
+      <div class="content-section">
+       <h3>📝 Ghi chú về trích dẫn</h3>
+       <p>Tất cả các tài liệu tham khảo được trích dẫn theo chuẩn APA (American Psychological Association) phiên bản 7. Các nghiên cứu được lựa chọn dựa trên:</p>
+       <ul>
+        <li><strong>Độ tin cậy:</strong> Từ các nguồn học thuật uy tín và tổ chức chính thức</li>
+        <li><strong>Tính cập nhật:</strong> Ưu tiên các nghiên cứu và tiêu chuẩn mới nhất</li>
+        <li><strong>Liên quan trực tiếp:</strong> Phù hợp với mục tiêu và phạm vi nghiên cứu</li>
+        <li><strong>Khả năng ứng dụng:</strong> Có thể áp dụng vào thực tiễn phát triển phần mềm</li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+    const defaultConfig = {
+      main_title: "Phần mềm hỗ trợ học Tiếng Anh lớp 11",
+      subtitle: "Đề tài nghiên cứu khoa học",
+      home_button_text: "Truy cập phần mềm",
+      tab1_title: "Tóm tắt",
+      tab2_title: "Lý do",
+      tab3_title: "Mục tiêu",
+      tab4_title: "Phương pháp",
+      tab5_title: "Nội dung",
+      tab6_title: "Kết quả",
+      tab7_title: "Tài liệu",
+      primary_color: "#4facfe",
+      secondary_color: "#00f2fe",
+      background_color: "#ffffff",
+      text_color: "#495057",
+      accent_color: "#f8f9fa"
+    };
+
+    async function onConfigChange(config) {
+      const mainTitle = config.main_title || defaultConfig.main_title;
+      const subtitle = config.subtitle || defaultConfig.subtitle;
+      const homeButtonText = config.home_button_text || defaultConfig.home_button_text;
+      const tab1Title = config.tab1_title || defaultConfig.tab1_title;
+      const tab2Title = config.tab2_title || defaultConfig.tab2_title;
+      const tab3Title = config.tab3_title || defaultConfig.tab3_title;
+      const tab4Title = config.tab4_title || defaultConfig.tab4_title;
+      const tab5Title = config.tab5_title || defaultConfig.tab5_title;
+      const tab6Title = config.tab6_title || defaultConfig.tab6_title;
+      const tab7Title = config.tab7_title || defaultConfig.tab7_title;
+      const primaryColor = config.primary_color || defaultConfig.primary_color;
+      const secondaryColor = config.secondary_color || defaultConfig.secondary_color;
+      const backgroundColor = config.background_color || defaultConfig.background_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+      const accentColor = config.accent_color || defaultConfig.accent_color;
+
+      document.getElementById('main-title').textContent = mainTitle;
+      document.querySelector('.research-type').textContent = subtitle;
+      document.querySelector('.home-text').textContent = homeButtonText;
+      document.querySelector('#tab-btn-1 .tab-text').textContent = tab1Title;
+      document.querySelector('#tab-btn-2 .tab-text').textContent = tab2Title;
+      document.querySelector('#tab-btn-3 .tab-text').textContent = tab3Title;
+      document.querySelector('#tab-btn-4 .tab-text').textContent = tab4Title;
+      document.querySelector('#tab-btn-5 .tab-text').textContent = tab5Title;
+      document.querySelector('#tab-btn-6 .tab-text').textContent = tab6Title;
+      document.querySelector('#tab-btn-7 .tab-text').textContent = tab7Title;
+
+      document.body.style.background = `linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%)`;
+      
+      const tabsContainer = document.querySelector('.tabs-container');
+      tabsContainer.style.background = backgroundColor;
+
+      const tabs = document.querySelector('.tabs');
+      tabs.style.background = accentColor;
+
+      const allText = document.querySelectorAll('.content-section h2, .content-section h3, .content-section p, .content-section li');
+      allText.forEach(el => {
+        if (el.tagName === 'H2') {
+          el.style.color = primaryColor;
+        } else {
+          el.style.color = textColor;
+        }
+      });
+
+      const badges = document.querySelectorAll('.chapter-badge');
+      badges.forEach(badge => {
+        badge.style.background = primaryColor;
+      });
+
+      const highlightBoxes = document.querySelectorAll('.highlight-box');
+      highlightBoxes.forEach(box => {
+        box.style.background = `linear-gradient(135deg, ${primaryColor}1A 0%, ${secondaryColor}1A 100%)`;
+        box.style.borderLeftColor = primaryColor;
+      });
+
+      const activeButtons = document.querySelectorAll('.tab-button.active');
+      activeButtons.forEach(btn => {
+        btn.style.color = primaryColor;
+        btn.style.background = backgroundColor;
+      });
+
+      const tabButtons = document.querySelectorAll('.tab-button');
+      tabButtons.forEach(btn => {
+        btn.addEventListener('mouseenter', function() {
+          if (!this.classList.contains('active')) {
+            this.style.background = `${primaryColor}1A`;
+            this.style.color = primaryColor;
+          }
+        });
+        btn.addEventListener('mouseleave', function() {
+          if (!this.classList.contains('active')) {
+            this.style.background = 'transparent';
+            this.style.color = '#6c757d';
+          }
+        });
+      });
+    }
+
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [
+          {
+            get: () => config.primary_color || defaultConfig.primary_color,
+            set: (value) => {
+              if (window.elementSdk) {
+                window.elementSdk.config.primary_color = value;
+                window.elementSdk.setConfig({ primary_color: value });
+              }
+            }
+          },
+          {
+            get: () => config.secondary_color || defaultConfig.secondary_color,
+            set: (value) => {
+              if (window.elementSdk) {
+                window.elementSdk.config.secondary_color = value;
+                window.elementSdk.setConfig({ secondary_color: value });
+              }
+            }
+          },
+          {
+            get: () => config.background_color || defaultConfig.background_color,
+            set: (value) => {
+              if (window.elementSdk) {
+                window.elementSdk.config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            }
+          },
+          {
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (value) => {
+              if (window.elementSdk) {
+                window.elementSdk.config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            }
+          },
+          {
+            get: () => config.accent_color || defaultConfig.accent_color,
+            set: (value) => {
+              if (window.elementSdk) {
+                window.elementSdk.config.accent_color = value;
+                window.elementSdk.setConfig({ accent_color: value });
+              }
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ["main_title", config.main_title || defaultConfig.main_title],
+        ["subtitle", config.subtitle || defaultConfig.subtitle],
+        ["home_button_text", config.home_button_text || defaultConfig.home_button_text],
+        ["tab1_title", config.tab1_title || defaultConfig.tab1_title],
+        ["tab2_title", config.tab2_title || defaultConfig.tab2_title],
+        ["tab3_title", config.tab3_title || defaultConfig.tab3_title],
+        ["tab4_title", config.tab4_title || defaultConfig.tab4_title],
+        ["tab5_title", config.tab5_title || defaultConfig.tab5_title],
+        ["tab6_title", config.tab6_title || defaultConfig.tab6_title],
+        ["tab7_title", config.tab7_title || defaultConfig.tab7_title]
+      ]);
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        const targetTab = button.getAttribute('data-tab');
+        
+        // Xử lý tab thông thường
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+        
+        button.classList.add('active');
+        document.getElementById(targetTab).classList.add('active');
+      });
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99920a2fe5c981a2',t:'MTc2MjIzNzU4Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
